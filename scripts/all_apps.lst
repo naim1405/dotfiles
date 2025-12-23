@@ -22,6 +22,7 @@ swaync
 rofi
 waypaper
 swww
+brightnessctl 
 
 #fonts
 noto-fonts
@@ -71,3 +72,10 @@ ntfs-3g
 # auth - polkit
 polkit
 polkit-kde-agent
+
+#theme - material
+materia-kde 
+kvantum-theme-materia
+materia-gtk-theme
+kvantum
+nwg-look
