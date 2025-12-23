@@ -20,9 +20,11 @@
         "backlight",
         "battery",
         "pulseaudio",
+		"network",
         "idle_inhibitor",
         "tray",
-        "custom/power"
+        // "custom/power",
+		"custom/notification"
     ],
     // Modules configuration
     "hyprland/workspaces": {
@@ -235,4 +237,26 @@
         "on-click": "~/.config/hypr/scripts/changewallpaper",
         "tooltip-format": "Change wallpaper",
     },
+
+	"custom/notification": {
+		"tooltip": false,
+		"format": "{icon}",
+		"format-icons": {
+			"notification": "<span foreground='red'><sup></sup></span>",
+			"none": "<span foreground='#ffffff'><sup>   </sup></span>",
+			"dnd-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-none": "<span foreground='#ffffff'><sup>   </sup></span>",
+			"inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"inhibited-none": "<span foreground='#ffffff'><sup>   </sup></span>",
+			"dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+			"dnd-inhibited-none": "<span foreground='#ffffff'><sup>   </sup></span>"
+		},
+		"return-type": "json",
+		"exec-if": "which swaync-client",
+		"exec": "swaync-client -swb",
+		"on-click": "swaync-client -t -sw",
+		"on-click-right": "swaync-client -d -sw",
+		"escape": true,
+	}
+	
 }

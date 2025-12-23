@@ -61,6 +61,7 @@ window#waybar {
 #custom-launcher,
 #custom-power,
 #custom-pacman,
+#custom-notification,
 #custom-network_traffic,
 #custom-weather{
     padding: 0 3px;
@@ -181,3 +182,40 @@ window#waybar {
 }
 
 
+
+#custom-notification {
+    font-family: "Font Awesome 6 Free", "Material Icons", sans-serif;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #3b4252;
+    padding: 4px 10px;
+    margin: 0 6px;
+    border-radius: 6px;
+    border: 1px solid #5e81ac;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Optional: Red background if there are unread notifications */
+#custom-notification.unread {
+    background-color: #bf616a;
+    color: #ffffff;
+    border-color: #d08770;
+}
+
+/* Hover effect */
+#custom-notification:hover {
+    background-color: #434c5e;
+    color: #88c0d0;
+}
+
+
+/* Pulse animation for new notification */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(191, 97, 106, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(191, 97, 106, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(191, 97, 106, 0); }
+}
+
+#custom-notification.pulse {
+    animation: pulse 2s infinite;
+}
