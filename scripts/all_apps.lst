@@ -16,6 +16,7 @@ yazi
 thunar
 thunar-volman
 thunar-archive-plugin
+gvfs
 mpv
 swaync
 rofi
@@ -66,3 +67,7 @@ hypridle
 hyprpaper
 hyprlock
 ntfs-3g
+
+# auth - polkit
+polkit
+polkit-kde-agent
