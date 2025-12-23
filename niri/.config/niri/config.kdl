@@ -196,6 +196,8 @@ binds {
 	spawn-at-startup "keepassxc"
 	spawn-at-startup "waypaper" "--random"
 	spawn-at-startup "swaync"
+	spawn-at-startup "blueman-tray"
+	spawn-at-startup "nm-applet"
 
     prefer-no-csd // Disable program decorations
 	screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"

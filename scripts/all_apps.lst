@@ -79,3 +79,22 @@ kvantum-theme-materia
 materia-gtk-theme
 kvantum
 nwg-look
+
+# bluetooth
+bluez
+bluez-utils
+blueman
+
+
+# tools
+zip
+unzip
+btop
+
+# screen share
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# network manager
+networkmanager
+network-manager-applet
