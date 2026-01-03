@@ -61,6 +61,7 @@ python
 tailscale
 scrcpy
 ripgrep
+visual-studio-code-bin
 
 
 # hypr
@@ -71,12 +72,15 @@ ntfs-3g
 
 # auth - polkit
 polkit
-polkit-kde-agent
+polkit-gnome
 
 #theme - material
+qogir-icon-theme-git 
 materia-kde 
 kvantum-theme-materia
 materia-gtk-theme
+orchis-theme
+kvantum-theme-orchis-git 
 kvantum
 nwg-look
 qt5-wayland
@@ -98,7 +102,9 @@ keepassxc
 
 # screen share
 xdg-desktop-portal-hyprland
-xdg-desktop-portal-gtk
+xdg-desktop-portal-gnome
+grim
+slurp
 
 # network manager
 networkmanager

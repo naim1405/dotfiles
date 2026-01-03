@@ -49,14 +49,13 @@ binds {
 
     // ─── Applications ───
     MOD+RETURN                          hotkey-overlay-title="Open Terminal: kitty " { spawn-sh "kitty"; }
-    //MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "rofi -show drun" ; }
     MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "~/.config/rofi/launchers/type-1/launcher.sh" ; }
  
 
  
     MOD+B                               hotkey-overlay-title="Open Browser: brave" { spawn-sh "brave"; }
     MOD+T                               hotkey-overlay-title="Open Telegram " { spawn-sh "Telegram"; }
-    MOD+BACKSPACE                       hotkey-overlay-title="Lock Screen: swaylock" { spawn-sh "swaylock"; }
+    MOD+BACKSPACE                       hotkey-overlay-title="Lock Screen: hyprlock" { spawn-sh "hyprlock"; }
     
     // Please choose your own file manager
     MOD+E                               hotkey-overlay-title="File Manager: Thunar" { spawn-sh "thunar"; }
@@ -188,7 +187,7 @@ binds {
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
-    spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
+    spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &" // Polkit
     spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
     spawn-sh-at-startup "waybar" // Launch waybar
 
@@ -206,7 +205,7 @@ binds {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 
     layout {
-        gaps 16 // Gap between windows
+        gaps 10 // Gap between windows
         center-focused-column "never" // Don’t auto-center focused column
 
         preset-column-widths {
