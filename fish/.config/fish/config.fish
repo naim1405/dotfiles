@@ -35,6 +35,7 @@ set PATH $PATH /home/ezio/.local/bin
 
 abbr np "cd '/mnt/New Volume/_Programming'"
 abbr work 'cd ~/Documents/work/'
+abbr ezo 'cd ~/Documents/personal/'
 abbr conf 'cd ~/.config/'
 
 
