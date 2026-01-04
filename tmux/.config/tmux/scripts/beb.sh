@@ -46,7 +46,6 @@ if [ $? != 0 ]; then
 
     # backend terminal
     tmux new-window -t $SESH_BACKEND -n "backendTerm" -c "$BACKEND_DIR"
-    tmux send-keys -t $SESH_BACKEND:backendTerm "bun dev" C-m
     tmux split-window -t "$SESH_BACKEND":backendTerm -h -c "$BACKEND_DIR"
 	tmux send-keys -t "$SESH_BACKEND:backendTerm.1" "bun dev" C-m
 
