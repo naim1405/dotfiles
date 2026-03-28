@@ -188,7 +188,6 @@ binds {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
 
     spawn-sh-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &" // Polkit
-    spawn-sh-at-startup "swww-daemon" // Wallpaper daemon
     spawn-sh-at-startup "waybar" // Launch waybar
 
 	spawn-at-startup "Telegram"

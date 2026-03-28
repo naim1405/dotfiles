@@ -63,6 +63,7 @@ abbr ta 'tmux attach-session'
 abbr tls 'tmux list-sessions'
 abbr br 'bun run'
 abbr bd 'bun dev'
+abbr tx 'tmux new -s '
 
 
 
