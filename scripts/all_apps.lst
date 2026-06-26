@@ -17,6 +17,7 @@ thunar
 thunar-volman
 thunar-archive-plugin
 gvfs
+gvfs-mtp
 mpv
 swaync
 rofi
@@ -87,6 +88,15 @@ qt5-wayland
 qt6-wayland
 qt5ct
 qt6ct
+qt6-declarative
+qt6-5compat
+qt6-svg
+qt6-multimedia
+qt6-multimedia-ffmpeg
+gst-plugins-base
+gst-plugins-good
+gst-plugins-bad
+gst-plugins-ugly
 
 # bluetooth
 bluez
