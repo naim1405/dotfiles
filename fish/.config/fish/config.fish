@@ -25,9 +25,10 @@ abbr mkdir 'mkdir -p'
 alias vim=nvim
 alias ff=fastfetch
 alias 'update-mirror'='rate-mirrors --protocol https --allow-root arch | sudo tee /etc/pacman.d/mirrorlist'
-alias note='nvim ~/Documents/notes/'
+alias n='nvim ~/Documents/notes/'
 alias beb='~/.config/tmux/scripts/beb.sh'
 set -x EDITOR nvim
+alias c=cdi
 
 
 # Created by `pipx` on 2025-02-09 15:36:34

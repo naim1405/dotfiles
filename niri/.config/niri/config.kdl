@@ -48,8 +48,11 @@ binds {
     MOD+SHIFT+ESCAPE                     { show-hotkey-overlay; }
 
     // ─── Applications ───
-    MOD+RETURN                          hotkey-overlay-title="Open Terminal: kitty " { spawn-sh "kitty"; }
-    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "~/.config/rofi/launchers/type-1/launcher.sh" ; }
+    // MOD+RETURN                          hotkey-overlay-title="Open Terminal: kitty " { spawn-sh "kitty"; }
+    MOD+RETURN                          hotkey-overlay-title="Open Terminal: ghostty" { spawn-sh "ghostty"; }
+    // MOD+SPACE                           hotkey-overlay-title="Open App Launcher: rofi" { spawn-sh "~/.config/rofi/launchers/type-1/launcher.sh" ; }
+
+    MOD+SPACE                           hotkey-overlay-title="Open App Launcher: vicinae" { spawn-sh "vicinae toggle"; }
  
 
  
@@ -196,6 +199,8 @@ binds {
 	spawn-at-startup "swaync"
 	spawn-at-startup "blueman-tray"
 	spawn-at-startup "nm-applet"
+	spawn-at-startup "rog-control-center"
+	spawn-at-startup "vicinae" "server"
 
     prefer-no-csd // Disable program decorations
 	screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
@@ -217,7 +222,7 @@ binds {
     default-column-width { proportion 1.0; }
 
         focus-ring {
-            width 5
+            width 3
             active-color "#00E0A8"
             inactive-color "#505050"
         }
@@ -234,38 +239,38 @@ binds {
 
 // ────────────── Animation Settings ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
-    animations {
-        workspace-switch {
-            spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
-        }
-        window-open {
-            duration-ms 200
-            curve "ease-out-quad"
-        }
-        window-close {
-            duration-ms 200
-            curve "ease-out-cubic"
-        }
-        horizontal-view-movement {
-            spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
-        }
-        window-movement {
-            spring damping-ratio=1.0 stiffness=800 epsilon=0.0001
-        }
-        window-resize {
-            spring damping-ratio=1.0 stiffness=1000 epsilon=0.0001
-        }
-        config-notification-open-close {
-            spring damping-ratio=0.6 stiffness=1200 epsilon=0.001
-        }
-        screenshot-ui-open {
-            duration-ms 300
-            curve "ease-out-quad"
-        }
-        overview-open-close {
-            spring damping-ratio=1.0 stiffness=900 epsilon=0.0001
-        }
+animations {
+    workspace-switch {
+        spring damping-ratio=0.80 stiffness=523 epsilon=0.0001
     }
+    window-open {
+        duration-ms 150
+        curve "ease-out-expo"
+    }
+    window-close {
+        duration-ms 150
+        curve "ease-out-quad"
+    }
+    horizontal-view-movement {
+        spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
+    }
+    window-movement {
+        spring damping-ratio=0.75 stiffness=323 epsilon=0.0001
+    }
+    window-resize {
+        spring damping-ratio=0.85 stiffness=423 epsilon=0.0001
+    }
+    config-notification-open-close {
+        spring damping-ratio=0.65 stiffness=923 epsilon=0.001
+    }
+    screenshot-ui-open {
+        duration-ms 200
+        curve "ease-out-quad"
+    }
+    overview-open-close {
+        spring damping-ratio=0.85 stiffness=800 epsilon=0.0001
+    }
+}
 
 // ────────────── Window Rules ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
@@ -280,6 +285,12 @@ binds {
         clip-to-geometry true
     }
 
+	window-rule {
+		match app-id="PenTablet" title="^XPPentablet$"
+		open-floating false 
+	}
+
+
 // ────────────── Environment Variables ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#environment
 
@@ -287,7 +298,7 @@ binds {
         DISPLAY ":1"
         ELECTRON_OZONE_PLATFORM_HINT "auto"
         QT_QPA_PLATFORM "wayland"
-        QT_QPA_PLATFORMTHEME "qt5ct"
+        QT_QPA_PLATFORMTHEME "qt6ct"
         QT_WAYLAND_DISABLE_WINDOWDECORATION "1"
         XDG_SESSION_TYPE "wayland"
         XDG_CURRENT_DESKTOP "niri"
