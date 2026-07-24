@@ -209,7 +209,7 @@ binds {
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 
     layout {
-        gaps 10 // Gap between windows
+        gaps 5 // Gap between windows
         center-focused-column "never" // Don’t auto-center focused column
 
         preset-column-widths {
@@ -219,10 +219,11 @@ binds {
             proportion 0.25
         }
 
+	// default window size
     default-column-width { proportion 1.0; }
 
         focus-ring {
-            width 3
+            width 2
             active-color "#00E0A8"
             inactive-color "#505050"
         }
