@@ -18,7 +18,6 @@ return {
 					"kanagawa-wave",
 					"kanagawa-dragon",
 					"kanagawa-lotus",
-					"oxocarbon",
 					"minimal-base16",
 					"minimal",
 				}, -- Your list of installed colorschemes.
@@ -88,13 +87,6 @@ return {
 
 		priority = 1000,
 	},
-	{
-
-		"nyoom-engineering/oxocarbon.nvim",
-
-		priority = 1000,
-	},
-
 	{
 
 		"Yazeed1s/minimal.nvim",
