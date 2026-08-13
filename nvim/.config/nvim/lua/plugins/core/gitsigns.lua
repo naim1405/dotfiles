@@ -36,14 +36,13 @@ return {
 				end, { desc = "Jump to previous git [c]hange" })
 
 				-- Actions
-				-- visual mode
-				map("v", "<leader>hs", function()
-					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, { desc = "git [s]tage hunk" })
-				map("v", "<leader>hr", function()
-					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-				end, { desc = "git [r]eset hunk" })
-				-- normal mode
+				-- Visual mode: starting the RHS with `:` preserves Neovim's
+				-- automatically populated '<,'> range, so Gitsigns operates on
+				-- exactly the selected lines (including partial hunks).
+				map("x", "<leader>hs", ":Gitsigns stage_hunk<CR>", { desc = "git [s]tage selected lines" })
+				map("x", "<leader>hr", ":Gitsigns reset_hunk<CR>", { desc = "git [r]eset selected lines" })
+
+				-- Normal mode
 				map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "git [s]tage hunk" })
 				map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "git [r]eset hunk" })
 				map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "git [S]tage buffer" })
