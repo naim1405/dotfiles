@@ -12,6 +12,62 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 BASE = Path(__file__).parent.resolve()
 
+# Load frequency dictionary
+FREQ_PATH = BASE / "freq_lookup.json"
+FREQ = {}
+if FREQ_PATH.exists():
+    try:
+        with open(FREQ_PATH, "r", encoding="utf-8") as f:
+            FREQ = json.load(f)
+        print(f"Loaded {len(FREQ)} frequency entries from {FREQ_PATH.name}")
+    except Exception as e:
+        print(f"Error loading frequency dictionary: {e}")
+
+# Initialize Janome Tokenizer
+try:
+    from janome.tokenizer import Tokenizer
+
+    TOKENIZER = Tokenizer()
+    print("Janome morphological tokenizer initialized successfully.")
+except Exception as e:
+    print(f"Warning: Janome tokenizer not available: {e}")
+    TOKENIZER = None
+
+
+def annotate_text(text_line):
+    """
+    Tokenizes a Japanese text line and looks up the frequency rank for each token.
+    Returns a list of dicts: {'s': surface, 'b': base_form, 'r': rank, 'p': pos}
+    """
+    if not TOKENIZER:
+        return []
+    tokens = []
+    try:
+        for tok in TOKENIZER.tokenize(text_line):
+            surface = tok.surface
+            base = tok.base_form if tok.base_form != "*" else surface
+            pos = tok.part_of_speech.split(",")[0]
+
+            rank = FREQ.get(base)
+            if rank is None:
+                rank = FREQ.get(surface)
+
+            # Check for inflected stems (e.g. adverbs/na-adjectives ending in に or な)
+            if (
+                (rank is None or rank > 10000)
+                and (surface.endswith("に") or surface.endswith("な"))
+                and len(surface) > 1
+            ):
+                stem_rank = FREQ.get(surface[:-1])
+                if stem_rank is not None and (rank is None or stem_rank < rank):
+                    rank = stem_rank
+
+            tokens.append({"s": surface, "b": base, "r": rank, "p": pos})
+    except Exception as e:
+        print(f"Tokenization error on line '{text_line}': {e}")
+        return []
+    return tokens
+
 
 def to_ms(h=0, m=0, s=0, ms=0):
     return ms + 1000 * (s + 60 * (m + 60 * h))
@@ -109,7 +165,7 @@ NORMALIZED = []
 IGNORE = set()
 DELAY = 0
 
-OPTIONS = {
+DEFAULT_OPTIONS = {
     "deck": "",
     "sentence": "",
     "expression": "",
@@ -117,7 +173,27 @@ OPTIONS = {
     "audio": "",
     "prev_lines": 0,
     "next_lines": 0,
+    "freq_enabled": True,
+    "freq_style": "underline",
+    "freq_tier1_max": 1500,
+    "freq_tier2_max": 5000,
+    "freq_tier3_max": 10000,
+    "freq_tier4_max": 25000,
+    "show_tier1": True,
+    "show_tier2": True,
+    "show_tier3": True,
+    "show_tier4": False,
+    "show_tier5": False,
 }
+
+OPTIONS = dict(DEFAULT_OPTIONS)
+OPTIONS_PATH = BASE / "options.json"
+if OPTIONS_PATH.exists():
+    try:
+        with open(OPTIONS_PATH, "r", encoding="utf-8") as f:
+            OPTIONS.update(json.load(f))
+    except Exception as e:
+        print(f"Error loading options: {e}")
 
 CHECK_LOCK = threading.Lock()
 
@@ -134,9 +210,17 @@ def load_subs_content(content):
     ID = token()
     try:
         if content.strip().startswith("[Script Info]") or "Dialogue:" in content:
-            LINES = parse_ass(content)
+            raw_lines = parse_ass(content)
         else:
-            LINES = parse_srt(content)
+            raw_lines = parse_srt(content)
+
+        # Annotate lines with tokenized frequency info
+        LINES = []
+        for item in raw_lines:
+            text_lines = item[0]
+            tokens_per_line = [annotate_text(line) for line in text_lines]
+            LINES.append([*item, tokens_per_line])
+
         NORMALIZED = [normalize_str("".join(line[0])) for line in LINES]
     except Exception as e:
         print(f"Error parsing subtitles: {e}")
@@ -315,7 +399,21 @@ def check(t):
             return
 
         for k, v in OPTIONS.items():
-            if k in ["prev_lines", "next_lines"]:
+            if k in [
+                "prev_lines",
+                "next_lines",
+                "freq_enabled",
+                "freq_style",
+                "freq_tier1_max",
+                "freq_tier2_max",
+                "freq_tier3_max",
+                "freq_tier4_max",
+                "show_tier1",
+                "show_tier2",
+                "show_tier3",
+                "show_tier4",
+                "show_tier5",
+            ]:
                 continue
             if not v:
                 return
@@ -357,11 +455,6 @@ def check(t):
     finally:
         CHECK_LOCK.release()
 
-
-OPTIONS_PATH = BASE / "options.json"
-if OPTIONS_PATH.exists():
-    with open(OPTIONS_PATH, "r") as f:
-        OPTIONS = json.load(f)
 
 TIME = 0, time.time()
 
@@ -483,8 +576,8 @@ class Server(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
 
-            TIME = body.get('time'), time.time()
-            DELAY = body.get('delay')
+            TIME = body.get("time"), time.time()
+            DELAY = body.get("delay")
         elif self.path == "/check":
             self.send_response(200)
             self.end_headers()
@@ -494,9 +587,13 @@ class Server(BaseHTTPRequestHandler):
             self.send_response(200)
             self.end_headers()
 
-            OPTIONS = body
-            with open(OPTIONS_PATH, "w") as f:
-                json.dump(OPTIONS, f)
+            if isinstance(body, dict):
+                OPTIONS.update(body)
+                try:
+                    with open(OPTIONS_PATH, "w", encoding="utf-8") as f:
+                        json.dump(OPTIONS, f, indent=2, ensure_ascii=False)
+                except Exception as e:
+                    print(f"Error writing options: {e}")
         else:
             self.send_response(404)
             self.end_headers()

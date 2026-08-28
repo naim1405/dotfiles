@@ -1,1 +1,20 @@
-{"deck": "\"Mining\"", "sentence": "Sentence", "expression": "Expression", "picture": "Picture", "audio": "SentenceAudio", "prev_lines": 0, "next_lines": 0}
+{
+  "deck": "\"Mining\"",
+  "sentence": "Sentence",
+  "expression": "Expression",
+  "picture": "Picture",
+  "audio": "SentenceAudio",
+  "prev_lines": 0,
+  "next_lines": 0,
+  "freq_enabled": true,
+  "freq_style": "pill",
+  "freq_tier1_max": 1500,
+  "freq_tier2_max": 5000,
+  "freq_tier3_max": 10000,
+  "freq_tier4_max": 25000,
+  "show_tier1": true,
+  "show_tier2": true,
+  "show_tier3": true,
+  "show_tier4": false,
+  "show_tier5": false
+}
