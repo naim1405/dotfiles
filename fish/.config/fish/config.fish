@@ -23,6 +23,7 @@ abbr .5 'cd ../../../../..'
 abbr mkdir 'mkdir -p'
 
 alias vim=nvim
+alias nv=nvim
 alias ff=fastfetch
 alias 'update-mirror'='rate-mirrors --protocol https --allow-root arch | sudo tee /etc/pacman.d/mirrorlist'
 alias n='nvim ~/Documents/notes/'
@@ -36,6 +37,7 @@ set PATH $PATH /home/ezio/.local/bin
 
 abbr np "cd '/mnt/New Volume/_Programming'"
 abbr work 'cd ~/Documents/work/'
+abbr p 'cd ~/Projects/'
 abbr ezo 'cd ~/Documents/personal/'
 abbr conf 'cd ~/.config/'
 
