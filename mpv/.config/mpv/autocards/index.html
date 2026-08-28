@@ -180,25 +180,48 @@
 			});
 		}
 
-		function scrollInfo(elm) {
-			const sh = elm.scrollHeight;
-			const st = elm.scrollTop;
-			const oh = elm.offsetHeight;
-
-			return oh === 0 || st === sh - oh;
+		function scrollToCenter(elm, isJump) {
+			if (!elm || !linesContainerElm) return;
+			const containerRect = linesContainerElm.getBoundingClientRect();
+			const elmRect = elm.getBoundingClientRect();
+			const delta = (elmRect.top + elmRect.height / 2) - (containerRect.top + containerRect.height / 2);
+			const targetScroll = linesContainerElm.scrollTop + delta;
+			linesContainerElm.scrollTo({
+				top: targetScroll,
+				behavior: isJump ? 'instant' : 'smooth'
+			});
 		}
+
+		let currentActiveIdx = -1;
 
 		function updateLines(t) {
 			const newIdx = bisectLeft(times, t);
-			const atBottom = scrollInfo(linesContainerElm);
+			const activeIdx = newIdx - 1;
 
 			let hidden = idx > newIdx, lo = Math.min(newIdx, idx), hi = Math.max(newIdx, idx);
 			setHidden(lo, hi, hidden);
 
-			if (idx === 0 || lo != hi && atBottom)
-				blankElm.scrollIntoView({behavior: hi - lo > 10 ? 'instant' : 'smooth', block: 'end'});
-
 			idx = newIdx;
+
+			if (activeIdx >= 0 && activeIdx < linesElm.children.length) {
+				if (activeIdx !== currentActiveIdx) {
+					if (currentActiveIdx >= 0 && currentActiveIdx < linesElm.children.length) {
+						linesElm.children[currentActiveIdx].classList.remove('current-line');
+					}
+					const activeElm = linesElm.children[activeIdx];
+					activeElm.classList.add('current-line');
+
+					const isJump = currentActiveIdx === -1 || Math.abs(activeIdx - currentActiveIdx) > 2;
+					scrollToCenter(activeElm, isJump);
+
+					currentActiveIdx = activeIdx;
+				}
+			} else if (activeIdx < 0 && currentActiveIdx >= 0) {
+				if (linesElm.children[currentActiveIdx]) {
+					linesElm.children[currentActiveIdx].classList.remove('current-line');
+				}
+				currentActiveIdx = -1;
+			}
 		}
 
 		function update() {
@@ -247,11 +270,9 @@
 			linesElm.innerHTML = '';
 			linesElm.appendChild(frag);
 
-			// Restore visible state based on current time
-			const newIdx = bisectLeft(times, currentT);
-			setHidden(0, newIdx, false);
-			setHidden(newIdx, times.length, true);
-			idx = newIdx;
+			currentActiveIdx = -1;
+			idx = 0;
+			updateLines(currentT);
 		}
 
 		function readLines() {
@@ -566,9 +587,28 @@
 			justify-self: center;
 			margin: auto;
 			padding-inline: 3rem;
-			margin-top: 1rem;
-			margin-bottom: 1.5rem;
-			gap: 1.25rem;
+			padding-top: 42vh;
+			padding-bottom: 45vh;
+			gap: 1.5rem;
+		}
+
+		.lines>div {
+			transition: opacity 0.25s ease, transform 0.25s ease;
+			opacity: 0.6;
+		}
+
+		.lines>div:hover,
+		.lines>div.current-line {
+			opacity: 1;
+		}
+
+		.lines>div.current-line {
+			transform: scale(1.015);
+		}
+
+		.lines>div.current-line>div {
+			border-color: var(--tier1-color);
+			box-shadow: 0 4px 24px color-mix(in srgb, var(--tier1-color) 25%, transparent);
 		}
 
 		.lines>div>p {
@@ -691,7 +731,7 @@
 		}
 
 		.blank {
-			height: 50%;
+			display: none;
 		}
 
 		.shill {
