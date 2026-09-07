@@ -309,3 +309,13 @@ animations {
     hotkey-overlay {
         skip-at-startup
     }
+
+
+// ────────────── Gestures ──────────────
+// Enable the top-right and bottom-right hot corners.
+gestures {
+    hot-corners {
+        top-left
+        top-right
+    }
+}
