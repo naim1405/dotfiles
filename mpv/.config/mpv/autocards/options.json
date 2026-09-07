@@ -7,7 +7,7 @@
   "prev_lines": 0,
   "next_lines": 0,
   "freq_enabled": true,
-  "freq_style": "pill",
+  "freq_style": "text",
   "freq_tier1_max": 1500,
   "freq_tier2_max": 5000,
   "freq_tier3_max": 10000,
