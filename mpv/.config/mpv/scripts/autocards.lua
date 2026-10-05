@@ -9,7 +9,8 @@ local CURL = "curl"
 local PYTHON = "python"
 
 local function post(endpoint, v)
-	utils.subprocess({
+	mp.command_native_async({
+		name = "subprocess",
 		args = {
 			CURL,
 			"-s",
@@ -46,6 +47,8 @@ end
 
 local HAS_SERVER = false
 local SERVER_FILE
+local pending_time
+local pending_update_timer
 
 local function update(t)
 	local delay = mp.get_property_native("sub-delay")
@@ -146,7 +149,22 @@ local function tick(k, v)
 	if not v or not HAS_SERVER then
 		return
 	end
-	update(v)
+
+	-- The page polls /update every 250 ms. Coalesce faster time-pos events so
+	-- playback doesn't spawn a subprocess for every video frame.
+	pending_time = v
+	if pending_update_timer then
+		return
+	end
+
+	pending_update_timer = mp.add_timeout(0.25, function()
+		pending_update_timer = nil
+		local latest_time = pending_time
+		pending_time = nil
+		if latest_time and HAS_SERVER then
+			update(latest_time)
+		end
+	end)
 end
 
 local function on_sub_change(name, value)
