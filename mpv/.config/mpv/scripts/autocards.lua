@@ -56,18 +56,44 @@ local function update(t)
 	return post("/update", payload)
 end
 
+local function get_sub_info(track)
+	if track["external"] then
+		return { type = "external", path = track["external-filename"] }
+	else
+		-- ff-index is the stream index used by ffmpeg
+		return { type = "internal", index = track["ff-index"], codec = track["codec"] }
+	end
+end
+
 local function get_active_sub()
-	local tracks = mp.get_property_native("track-list")
+	local tracks = mp.get_property_native("track-list") or {}
+
+	-- When two subtitles are selected, both are marked as selected. MPV uses
+	-- main-selection=0 for the primary sid and 1 for secondary-sid.
 	for _, track in ipairs(tracks) do
-		if track["type"] == "sub" and track["selected"] then
-			if track["external"] then
-				return { type = "external", path = track["external-filename"] }
-			else
-				-- ff-index is the stream index used by ffmpeg
-				return { type = "internal", index = track["ff-index"], codec = track["codec"] }
+		if track["type"] == "sub" and track["selected"] and track["main-selection"] == 0 then
+			return get_sub_info(track)
+		end
+	end
+
+	-- Compatibility fallback for MPV versions without main-selection.
+	local sid = tonumber(mp.get_property("sid") or "")
+	if sid then
+		for _, track in ipairs(tracks) do
+			if track["type"] == "sub" and track["selected"] and tonumber(track["id"]) == sid then
+				return get_sub_info(track)
 			end
 		end
 	end
+
+	-- If neither primary-selection signal is available, retain the old
+	-- single-selected-subtitle behavior.
+	for _, track in ipairs(tracks) do
+		if track["type"] == "sub" and track["selected"] then
+			return get_sub_info(track)
+		end
+	end
+
 	return nil
 end
 
