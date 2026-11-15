@@ -4,9 +4,6 @@ return {
 		config = function()
 			require("themery").setup({
 				themes = {
-					"catppuccin-mocha",
-					"catppuccin-frappe",
-					"catppuccin-macchiato",
 					"onedark_dark",
 					"onedark_vivid",
 					"sonokai",
@@ -14,7 +11,6 @@ return {
 					"edge",
 					"dracula",
 					"dracula-soft",
-					"zephyr",
 					"kanagawa-wave",
 					"kanagawa-dragon",
 					"kanagawa-lotus",
@@ -45,10 +41,6 @@ return {
 		priority = 1000, -- Ensure it loads first
 	},
 	{
-		"catppuccin/nvim",
-		priority = 1000,
-	},
-	{
 		"neanias/everforest-nvim",
 		version = false,
 		lazy = false,
@@ -77,10 +69,6 @@ return {
 		config = function()
 			italic_comment = true -- default false
 		end,
-	},
-	{
-		"glepnir/zephyr-nvim",
-		priority = 1000,
 	},
 	{
 		"rebelot/kanagawa.nvim",
